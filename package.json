@@ -1,0 +1,13 @@
+{
+  "name": "kananda-booster",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build:css": "sass src/styles.scss styles.css --style=expanded --no-source-map",
+    "watch:css": "sass src/styles.scss styles.css --watch",
+    "start": "node scripts/server.js"
+  },
+  "devDependencies": {
+    "sass": "^1.77.8"
+  }
+}

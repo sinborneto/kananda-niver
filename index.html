@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kananda Booster</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app" aria-live="polite">
+      <section class="booster-screen" data-booster-screen>
+        <p class="eyebrow">Kananda pack</p>
+        <button class="booster" type="button" data-booster aria-label="Abrir booster">
+          <span class="booster__glow" aria-hidden="true"></span>
+          <span class="booster__slash" aria-hidden="true"></span>
+          <img class="booster__half booster__half--top" src="./test2-cutout.png" alt="" draggable="false" />
+          <img class="booster__half booster__half--bottom" src="./test2-cutout.png" alt="" draggable="false" />
+        </button>
+        <p class="hint" data-hint>Toque para abrir</p>
+      </section>
+
+      <section class="cards-screen" data-cards-screen aria-hidden="true">
+        <p class="eyebrow">Cartas reveladas</p>
+        <button class="deck" type="button" data-deck aria-label="Passar para a próxima carta">
+          <img class="card card--active" data-active-card src="./1-cutout.png" alt="Carta 1" draggable="false" />
+          <img class="card card--next" data-next-card src="./2-cutout.png" alt="" draggable="false" aria-hidden="true" />
+        </button>
+        <div class="card-meta">
+          <span data-card-count>1 / 7</span>
+          <span>Toque para passar</span>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>
