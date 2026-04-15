@@ -15,11 +15,61 @@ const deck = document.querySelector("[data-deck]");
 const activeCard = document.querySelector("[data-active-card]");
 const nextCard = document.querySelector("[data-next-card]");
 const cardCount = document.querySelector("[data-card-count]");
+const cardAction = document.querySelector("[data-card-action]");
 const hint = document.querySelector("[data-hint]");
 
 let currentCard = 0;
 let isOpening = false;
 let isSliding = false;
+let imagesReady = false;
+
+function preloadImage(src) {
+  return new Promise((resolve) => {
+    const image = new Image();
+    image.decoding = "async";
+
+    image.addEventListener(
+      "load",
+      () => {
+        if (!image.decode) {
+          resolve({ src, ok: true });
+          return;
+        }
+
+        image
+          .decode()
+          .then(() => resolve({ src, ok: true }))
+          .catch(() => resolve({ src, ok: true }));
+      },
+      { once: true },
+    );
+
+    image.addEventListener("error", () => resolve({ src, ok: false }), { once: true });
+    image.src = `./${src}`;
+  });
+}
+
+function setInteractionReady() {
+  imagesReady = true;
+  booster.removeAttribute("disabled");
+  deck.removeAttribute("disabled");
+  hint.textContent = "Toque para abrir";
+  cardAction.textContent = "Toque para passar";
+}
+
+function preloadCards() {
+  const sources = [...new Set(cards.map((card) => card.src))];
+
+  Promise.all(sources.map(preloadImage)).then((results) => {
+    const failed = results.filter((result) => !result.ok);
+
+    if (failed.length > 0) {
+      console.warn("Algumas cartas nao foram pre-carregadas:", failed.map((result) => result.src));
+    }
+
+    setInteractionReady();
+  });
+}
 
 function revealCards() {
   boosterScreen.classList.add("is-hidden");
@@ -29,7 +79,7 @@ function revealCards() {
 }
 
 function openBooster() {
-  if (isOpening) return;
+  if (isOpening || !imagesReady) return;
 
   isOpening = true;
   booster.classList.add("is-opening");
@@ -53,7 +103,7 @@ function setCardImage(image, index) {
 }
 
 function showNextCard() {
-  if (isSliding) return;
+  if (isSliding || !imagesReady) return;
 
   isSliding = true;
   const nextIndex = (currentCard + 1) % cards.length;
@@ -83,6 +133,7 @@ setCardImage(activeCard, 0);
 setCardImage(nextCard, 1);
 deck.classList.toggle("deck--rare", cards[currentCard].rare);
 updateCounter();
+preloadCards();
 
 booster.addEventListener("click", openBooster);
 deck.addEventListener("click", showNextCard);

@@ -118,6 +118,15 @@ button {
   outline-offset: 8px;
 }
 
+.booster:disabled,
+.deck:disabled {
+  cursor: wait;
+}
+
+.booster:disabled {
+  opacity: 0.78;
+}
+
 .booster__glow {
   position: absolute;
   width: 86%;
